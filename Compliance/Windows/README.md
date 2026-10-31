@@ -9,6 +9,7 @@ sibling folders (for example, `Compliance/macOS/`), not here.
 | --- | --- |
 | [`Detect-7ZipInstalled.ps1`](Detect-7ZipInstalled.ps1) | Detects whether 7-Zip is installed on a managed Windows device and returns its version |
 | [`Detect-WindowsCumulativeUpdate.ps1`](Detect-WindowsCumulativeUpdate.ps1) | Detects whether a Windows device has received the latest cumulative patch (within the last 30 days) |
+| [`Detect-DeviceTrustState.ps1`](Detect-DeviceTrustState.ps1) | Detects a Windows device's trust / join state (workplace-joined, Azure AD-joined, domain-joined, hybrid-joined) |
 
 ### Detect-7ZipInstalled.ps1
 
@@ -60,3 +61,28 @@ Use in Intune as a custom compliance policy (Windows): upload this script
 as the discovery script, add a JSON rule for `WindowsVersionState`, and
 assign the policy to the target devices. No Graph permissions are needed
 for the detection script itself — it runs locally on the device.
+
+### Detect-DeviceTrustState.ps1
+
+Detects a Windows device's trust / join state, for use as an Intune
+custom compliance discovery script.
+
+How it works: it runs `dsregcmd /status` on the device and parses its
+`DeviceState` section, then returns the join state as JSON:
+
+```json
+{"WPJ":"NO","AADJ":"YES","DJ":"NO","HAADJ":"NO"}
+```
+
+| Property | Meaning |
+| --- | --- |
+| `WPJ` | Workplace-joined — `YES` when the device is neither domain-joined nor Azure AD-joined, otherwise `NO` |
+| `AADJ` | Azure AD-joined (`DeviceState.AzureAdJoined`) |
+| `DJ` | Domain-joined (`DeviceState.DomainJoined`) |
+| `HAADJ` | Hybrid Azure AD-joined (`DeviceState.EnterpriseJoined`) |
+
+Use in Intune as a custom compliance policy (Windows): upload this script
+as the discovery script, add JSON rules for the properties you need
+(for example, `AADJ` equals `YES`), and assign the policy to the target
+devices. No Graph permissions are needed for the detection script itself
+— it runs locally on the device.
