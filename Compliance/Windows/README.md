@@ -8,6 +8,7 @@ sibling folders (for example, `Compliance/macOS/`), not here.
 | Script | What it does |
 | --- | --- |
 | [`Detect-7ZipInstalled.ps1`](Detect-7ZipInstalled.ps1) | Detects whether 7-Zip is installed on a managed Windows device and returns its version |
+| [`Detect-WindowsCumulativeUpdate.ps1`](Detect-WindowsCumulativeUpdate.ps1) | Detects whether a Windows device has received the latest cumulative patch (within the last 30 days) |
 
 ### Detect-7ZipInstalled.ps1
 
@@ -31,3 +32,31 @@ Use in Intune as a custom compliance policy (Windows): upload this script
 as the discovery script, add a JSON rule for `App7zipVersion`, and assign
 the policy to the target devices. No Graph permissions are needed for the
 detection script itself — it runs locally on the device.
+
+### Detect-WindowsCumulativeUpdate.ps1
+
+Detects whether a Windows device has received the latest cumulative patch
+within the last 30 days, for use as an Intune custom compliance discovery
+script.
+
+How it works: it calculates the current month's Patch Tuesday (the second
+Tuesday), then uses the Windows Update Agent (`Microsoft.Update.Session`)
+to search for assigned, non-hidden, not-installed updates whose title
+contains "cumulative". If no such cumulative update is pending, it returns:
+
+```json
+{"WindowsVersionState":"Up-to-date"}
+```
+
+If a cumulative update is pending, it returns
+`{"WindowsVersionState":"Not up-to-date"}`.
+
+Note: during the Patch Tuesday grace week the script returns
+`{"Update status":"Up-to-date"}` instead (a different JSON key) — keep
+that in mind when writing the custom compliance rule for
+`WindowsVersionState`.
+
+Use in Intune as a custom compliance policy (Windows): upload this script
+as the discovery script, add a JSON rule for `WindowsVersionState`, and
+assign the policy to the target devices. No Graph permissions are needed
+for the detection script itself — it runs locally on the device.
