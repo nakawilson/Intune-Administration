@@ -10,6 +10,7 @@ sibling folders (for example, `Compliance/macOS/`), not here.
 | [`Detect-7ZipInstalled.ps1`](Detect-7ZipInstalled.ps1) | Detects whether 7-Zip is installed on a managed Windows device and returns its version |
 | [`Detect-WindowsCumulativeUpdate.ps1`](Detect-WindowsCumulativeUpdate.ps1) | Detects whether a Windows device has received the latest cumulative patch (within the last 30 days) |
 | [`Detect-DeviceTrustState.ps1`](Detect-DeviceTrustState.ps1) | Detects a Windows device's trust / join state (workplace-joined, Azure AD-joined, domain-joined, hybrid-joined) |
+| [`Detect-AdobeUpdatesViaRUM.ps1`](Detect-AdobeUpdatesViaRUM.ps1) | Detects installed Adobe software and whether Adobe Remote Update Manager (RUM) should be triggered to update it |
 
 ### Detect-7ZipInstalled.ps1
 
@@ -86,3 +87,28 @@ as the discovery script, add JSON rules for the properties you need
 (for example, `AADJ` equals `YES`), and assign the policy to the target
 devices. No Graph permissions are needed for the detection script itself
 — it runs locally on the device.
+
+### Detect-AdobeUpdatesViaRUM.ps1
+
+Detects installed Adobe software and whether Adobe Remote Update Manager
+(RUM) should be triggered to update it, for use as an Intune detection
+script (for example, in Proactive Remediation).
+
+How it works: it lists Adobe products from the Windows registry
+(64-bit and 32-bit uninstall keys), checks for RUM at
+`C:\Program Files (x86)\Common Files\Adobe\OOBE_Enterprise\RemoteUpdateManager\RemoteUpdateManager.exe`,
+and tracks its last run in `C:\temp\Logs\AdobeUpdate.log`.
+
+- Exit `1` — an update should be triggered: RUM is present and the script
+  has not run in the last 7 days (or has never run / its log is empty).
+- Exit `0` — no action: RUM is not present, or the last update attempt
+  was within the last 7 days.
+
+It must be run with Administrator privilege. It writes to the Windows
+event log `AdobeUpdate` (source `AdobeUpdate`, Event ID 60001) and to the
+local log file above. The script includes the SAP codes of the Adobe
+applications serviceable through RUM (Photoshop, Premiere Pro, Illustrator,
+InDesign, Acrobat / After Effects, and others).
+
+No Graph permissions are needed for the detection script itself — it runs
+locally on the device.
