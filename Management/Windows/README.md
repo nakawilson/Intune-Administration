@@ -72,5 +72,4 @@ different processes, edit the `$processesToExclude` list at the top of
 the script.
 
 It must be run as Administrator. It runs locally on the device — no Graph
-permissions are needed. All comments were removed from the published
-script at the user's request; the logic is otherwise unchanged.
+permissions are needed.

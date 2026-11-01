@@ -172,9 +172,7 @@ Enterprise, it reads the license status via
   a VM, a non-Enterprise edition, or an error retrieving the status.
 - Exit `1` — not activated (license status 0), so remediation is required.
 
-It runs locally on the device — no Graph permissions are needed. All
-comments were removed from the published script at the user's request;
-the logic is otherwise unchanged.
+It runs locally on the device — no Graph permissions are needed.
 
 ### Detect-OfficeVersionCompliance.ps1
 
@@ -227,5 +225,4 @@ The minimum thresholds are set at the top of the script
 Use in Intune as a custom compliance policy (Windows): upload this script
 as the discovery script, add a JSON rule for `returnCode`, and assign the
 policy to the target devices. It runs locally on the device — no Graph
-permissions are needed. All comments were removed from the published
-script at the user's request; the logic is otherwise unchanged.
+permissions are needed.

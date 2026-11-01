@@ -41,10 +41,7 @@ Logs are written to
 `/Library/Logs/Microsoft/ClientPatching/videolan-vlc_media_player.log`
 (kept to the last 50 lines once it passes 300 lines).
 
-It runs locally on the device — no Graph permissions are needed. All
-comments were removed from the published script at the user's request;
-the logic is otherwise unchanged. The `#!/bin/zsh` first line was kept,
-as it is the interpreter directive, not a comment.
+It runs locally on the device — no Graph permissions are needed.
 
 ### Check-WindowsAppVersion.sh
 
