@@ -8,6 +8,7 @@ sibling folders (for example, `Management/macOS/`), not here.
 | Script | What it does |
 | --- | --- |
 | [`Install-EdgeExtension.ps1`](Install-EdgeExtension.ps1) | Installs (or removes) a Microsoft Edge extension on a managed Windows device, via the Edge ExtensionInstallForcelist policy |
+| [`Add-DefenderProcessExclusions.ps1`](Add-DefenderProcessExclusions.ps1) | Adds Windows 365 and Remote Desktop executables to Microsoft Defender process exclusions (applies to all users) |
 
 ### Install-EdgeExtension.ps1
 
@@ -46,3 +47,30 @@ command `Chrome-ExtensionInstall`, but there is no function by that name
 in the script — run the script directly with its parameters, as above.
 
 It runs locally on the device — no Graph permissions are needed.
+
+### Add-DefenderProcessExclusions.ps1
+
+Adds executables to Microsoft Defender process exclusions, for deployment
+as a management script pushed by the MDM server. Defender exclusions are
+machine-wide, so they apply to all users on the device.
+
+How it works: it reads the current process exclusions with
+`Get-MpPreference`, then adds each of these with `Add-MpPreference
+-ExclusionProcess` if it is not already excluded, and prints the final
+exclusion list:
+
+- `ShellAppRuntime.exe`
+- `Windows365.exe`
+- `MsTeamsVdi.exe`
+- `msrdc.exe`
+- `msrdcw.exe`
+
+These are the Windows 365 and Remote Desktop (MSRDC) executables. If an
+exclusion already exists it is skipped, and a failure to add one is
+reported as a warning rather than stopping the script. To exclude
+different processes, edit the `$processesToExclude` list at the top of
+the script.
+
+It must be run as Administrator. It runs locally on the device — no Graph
+permissions are needed. All comments were removed from the published
+script at the user's request; the logic is otherwise unchanged.

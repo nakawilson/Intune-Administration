@@ -22,5 +22,6 @@ Scripts are kept separate by operating system — do not mix them in one folder.
 | Script | What it does | Runs where |
 | --- | --- | --- |
 | [`Windows/Install-EdgeExtension.ps1`](Windows/Install-EdgeExtension.ps1) | Installs (or removes) a Microsoft Edge extension on a managed Windows device, via the Edge ExtensionInstallForcelist policy | On the device, pushed by the MDM server |
+| [`Windows/Add-DefenderProcessExclusions.ps1`](Windows/Add-DefenderProcessExclusions.ps1) | Adds Windows 365 and Remote Desktop executables to Microsoft Defender process exclusions (applies to all users) | On the device, pushed by the MDM server |
 
 See [`Windows/README.md`](Windows/README.md) for details on these scripts.
