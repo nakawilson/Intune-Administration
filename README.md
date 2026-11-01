@@ -7,6 +7,7 @@ Sample PowerShell scripts for administering Microsoft Intune via Microsoft Graph
 | Folder | What goes here |
 | --- | --- |
 | [`Compliance/`](Compliance/) | Scripts for device compliance — compliance policies, compliance state, non-compliant devices, remediation |
+| [`Management/`](Management/) | Scripts pushed to managed devices by the MDM server to deploy a custom policy or configure the device |
 
 Each folder has its own README describing the scripts in it, their required
 Graph permissions, and the Intune RBAC role needed to run them.

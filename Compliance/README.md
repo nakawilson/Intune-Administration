@@ -44,5 +44,6 @@ Scripts are kept separate by operating system — do not mix them in one folder.
 | [`Windows/Detect-StaleLocalAccountPasswords.ps1`](Windows/Detect-StaleLocalAccountPasswords.ps1) | Detects local administrator accounts whose password is older than 50 days, so rotation can be triggered | On the device, as an Intune detection script (for example, in Proactive Remediation) |
 | [`Windows/Detect-WindowsActivation.ps1`](Windows/Detect-WindowsActivation.ps1) | Detects whether a Windows Enterprise device is activated (skips VMs and non-Enterprise editions) | On the device, as an Intune detection script (for example, in Proactive Remediation) |
 | [`Windows/Detect-OfficeVersionCompliance.ps1`](Windows/Detect-OfficeVersionCompliance.ps1) | Detects whether Microsoft 365 Apps (Office) meets the required minimum version and the ClickToRun service is running | On the device, as an Intune detection script (for example, in Proactive Remediation) |
+| [`Windows/Detect-HardwareReadiness.ps1`](Windows/Detect-HardwareReadiness.ps1) | Detects whether a Windows device meets the minimum hardware requirements (storage, memory, TPM, CPU, Secure Boot) | On the device, as an Intune custom compliance discovery script |
 
 See [`Windows/README.md`](Windows/README.md) for details on these scripts.
