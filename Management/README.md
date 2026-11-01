@@ -15,7 +15,7 @@ Scripts are kept separate by operating system — do not mix them in one folder.
 | Folder | What goes here |
 | --- | --- |
 | [`Windows/`](Windows/) | Windows management scripts |
-| `macOS/` _(when needed)_ | macOS management scripts |
+| [`macOS/`](macOS/) | macOS management scripts |
 
 ### Windows
 
@@ -24,4 +24,11 @@ Scripts are kept separate by operating system — do not mix them in one folder.
 | [`Windows/Install-EdgeExtension.ps1`](Windows/Install-EdgeExtension.ps1) | Installs (or removes) a Microsoft Edge extension on a managed Windows device, via the Edge ExtensionInstallForcelist policy | On the device, pushed by the MDM server |
 | [`Windows/Add-DefenderProcessExclusions.ps1`](Windows/Add-DefenderProcessExclusions.ps1) | Adds Windows 365 and Remote Desktop executables to Microsoft Defender process exclusions (applies to all users) | On the device, pushed by the MDM server |
 
-See [`Windows/README.md`](Windows/README.md) for details on these scripts.
+### macOS
+
+| Script | What it does | Runs where |
+| --- | --- | --- |
+| [`macOS/Patch-VLCMediaPlayer.zsh`](macOS/Patch-VLCMediaPlayer.zsh) | Patches VLC Media Player on a macOS device to the latest release (or the admin-designated version) | On the device, pushed by the MDM server |
+
+See [`Windows/README.md`](Windows/README.md) and
+[`macOS/README.md`](macOS/README.md) for details on these scripts.
