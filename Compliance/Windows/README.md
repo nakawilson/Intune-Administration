@@ -12,6 +12,7 @@ sibling folders (for example, `Compliance/macOS/`), not here.
 | [`Detect-DeviceTrustState.ps1`](Detect-DeviceTrustState.ps1) | Detects a Windows device's trust / join state (workplace-joined, Azure AD-joined, domain-joined, hybrid-joined) |
 | [`Detect-AdobeUpdatesViaRUM.ps1`](Detect-AdobeUpdatesViaRUM.ps1) | Detects installed Adobe software and whether Adobe Remote Update Manager (RUM) should be triggered to update it |
 | [`Collect-PnPAndWindowsUpdateLogs.ps1`](Collect-PnPAndWindowsUpdateLogs.ps1) | Collects PnP device state and Windows Update logs from a managed Windows device |
+| [`Detect-StaleLocalAccountPasswords.ps1`](Detect-StaleLocalAccountPasswords.ps1) | Detects local administrator accounts whose password is older than 50 days, so rotation can be triggered |
 
 ### Detect-7ZipInstalled.ps1
 
@@ -130,3 +131,24 @@ logs, and moves the resulting `WindowsUpdateLogs` archive into
 Notes: the log collector runs for up to 5 minutes while the script waits,
 and the script cleans up the downloaded collector afterwards. It runs
 locally on the device — no Graph permissions are needed.
+
+### Detect-StaleLocalAccountPasswords.ps1
+
+Detects local administrator accounts whose password is stale, for use as
+an Intune detection script (for example, in Proactive Remediation) to
+trigger password rotation.
+
+How it works: it lists the members of the local Administrators group
+(SID ending in 544), keeps the local users, and checks each one's
+`PasswordLastSet` date.
+
+- Exit `1` — rotation is needed: at least one local administrator's
+  password is older than 50 days.
+- Exit `0` — no rotation needed: all local administrators' passwords are
+  50 days old or less, or a password has never been set; also exits `0` if
+  the Administrators group cannot be retrieved.
+
+Note: this is a detection script only — it does not change any password
+itself. The actual rotation is a separate remediation step. It runs
+locally on the device — no Graph permissions are needed, and it contains
+no passwords or credentials.

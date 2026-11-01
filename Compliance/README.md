@@ -37,5 +37,9 @@ Scripts are kept separate by operating system — do not mix them in one folder.
 | Script | What it does | Runs where |
 | --- | --- | --- |
 | [`Windows/Detect-7ZipInstalled.ps1`](Windows/Detect-7ZipInstalled.ps1) | Detects whether 7-Zip is installed on a managed Windows device and returns its version | On the device, as an Intune custom compliance detection script |
+| [`Windows/Detect-WindowsCumulativeUpdate.ps1`](Windows/Detect-WindowsCumulativeUpdate.ps1) | Detects whether a Windows device has received the latest cumulative patch (within the last 30 days) | On the device, as an Intune custom compliance detection script |
+| [`Windows/Detect-DeviceTrustState.ps1`](Windows/Detect-DeviceTrustState.ps1) | Detects a Windows device's trust / join state (workplace-joined, Azure AD-joined, domain-joined, hybrid-joined) | On the device, as an Intune custom compliance detection script |
+| [`Windows/Detect-AdobeUpdatesViaRUM.ps1`](Windows/Detect-AdobeUpdatesViaRUM.ps1) | Detects installed Adobe software and whether Adobe Remote Update Manager (RUM) should be triggered to update it | On the device, as an Intune detection script (for example, in Proactive Remediation) |
+| [`Windows/Collect-PnPAndWindowsUpdateLogs.ps1`](Windows/Collect-PnPAndWindowsUpdateLogs.ps1) | Collects PnP device state and Windows Update logs from a managed Windows device | On the device, for troubleshooting from Intune |
 
-See [`Windows/README.md`](Windows/README.md) for details on that script.
+See [`Windows/README.md`](Windows/README.md) for details on these scripts.
