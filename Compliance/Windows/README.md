@@ -15,6 +15,7 @@ sibling folders (for example, `Compliance/macOS/`), not here.
 | [`Detect-StaleLocalAccountPasswords.ps1`](Detect-StaleLocalAccountPasswords.ps1) | Detects local administrator accounts whose password is older than 50 days, so rotation can be triggered |
 | [`Detect-WindowsActivation.ps1`](Detect-WindowsActivation.ps1) | Detects whether a Windows Enterprise device is activated (skips VMs and non-Enterprise editions) |
 | [`Detect-OfficeVersionCompliance.ps1`](Detect-OfficeVersionCompliance.ps1) | Detects whether Microsoft 365 Apps (Office) meets the required minimum version and the ClickToRun service is running |
+| [`Detect-HardwareReadiness.ps1`](Detect-HardwareReadiness.ps1) | Detects whether a Windows device meets the minimum hardware requirements (storage, memory, TPM, CPU, Secure Boot) |
 
 ### Detect-7ZipInstalled.ps1
 
@@ -198,3 +199,33 @@ installed versions, version state, service status, overall compliance,
 check time) via `Write-Output` only, with no file logging, so Intune can
 capture it. It runs locally on the device — no Graph permissions are
 needed.
+
+### Detect-HardwareReadiness.ps1
+
+Detects whether a Windows device meets the minimum hardware requirements,
+for use as an Intune custom compliance discovery script.
+
+How it works: it checks each requirement in turn and returns a JSON
+summary (`returnCode`, `returnResult`, `returnReason`, `logging`):
+
+- **Storage:** OS disk at least 64 GB.
+- **Memory:** at least 4 GB.
+- **TPM:** TPM present, with SpecVersion 1.2 or 2.0.
+- **CPU:** 64-bit address width, max clock speed above 1000 MHz, at least
+  2 cores, and a supported CPU family (Intel / AMD / ARM, validated by an
+  embedded C# check using native system info).
+- **Secure Boot:** `Confirm-SecureBootUEFI` — not supported / non-UEFI is a
+  failure, an access error is undetermined.
+
+`returnCode` is `0` (`CAPABLE`) when all checks pass, `1`
+(`NOT CAPABLE`) when any check fails, and `-1` (`UNDETERMINED`) when a
+check cannot be determined (a failure takes precedence over undetermined).
+The minimum thresholds are set at the top of the script
+(`$MinOSDiskSizeGB`, `$MinMemoryGB`, `$MinClockSpeedMHz`, `$MinCores`,
+`$RequiredAddressWidth`) — update them there if the requirements change.
+
+Use in Intune as a custom compliance policy (Windows): upload this script
+as the discovery script, add a JSON rule for `returnCode`, and assign the
+policy to the target devices. It runs locally on the device — no Graph
+permissions are needed. All comments were removed from the published
+script at the user's request; the logic is otherwise unchanged.
