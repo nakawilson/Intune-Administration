@@ -13,6 +13,7 @@ sibling folders (for example, `Compliance/macOS/`), not here.
 | [`Detect-AdobeUpdatesViaRUM.ps1`](Detect-AdobeUpdatesViaRUM.ps1) | Detects installed Adobe software and whether Adobe Remote Update Manager (RUM) should be triggered to update it |
 | [`Collect-PnPAndWindowsUpdateLogs.ps1`](Collect-PnPAndWindowsUpdateLogs.ps1) | Collects PnP device state and Windows Update logs from a managed Windows device |
 | [`Detect-StaleLocalAccountPasswords.ps1`](Detect-StaleLocalAccountPasswords.ps1) | Detects local administrator accounts whose password is older than 50 days, so rotation can be triggered |
+| [`Detect-WindowsActivation.ps1`](Detect-WindowsActivation.ps1) | Detects whether a Windows Enterprise device is activated (skips VMs and non-Enterprise editions) |
 
 ### Detect-7ZipInstalled.ps1
 
@@ -152,3 +153,23 @@ Note: this is a detection script only — it does not change any password
 itself. The actual rotation is a separate remediation step. It runs
 locally on the device — no Graph permissions are needed, and it contains
 no passwords or credentials.
+
+### Detect-WindowsActivation.ps1
+
+Detects whether a Windows device is activated, for use as an Intune
+detection script (for example, in Proactive Remediation).
+
+How it works: it first checks the computer model — virtual machines
+(Hyper-V, VMware, VirtualBox, HVM domU) exit `0` with no action required.
+On a physical device it checks the Windows edition; only Enterprise
+editions are checked, and non-Enterprise editions exit `0`. For
+Enterprise, it reads the license status via
+`SoftwareLicensingProduct`:
+
+- Exit `0` — activated (license status 1), in a grace period (status 2–6),
+  a VM, a non-Enterprise edition, or an error retrieving the status.
+- Exit `1` — not activated (license status 0), so remediation is required.
+
+It runs locally on the device — no Graph permissions are needed. All
+comments were removed from the published script at the user's request;
+the logic is otherwise unchanged.
