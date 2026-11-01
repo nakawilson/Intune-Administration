@@ -11,6 +11,7 @@ sibling folders (for example, `Compliance/macOS/`), not here.
 | [`Detect-WindowsCumulativeUpdate.ps1`](Detect-WindowsCumulativeUpdate.ps1) | Detects whether a Windows device has received the latest cumulative patch (within the last 30 days) |
 | [`Detect-DeviceTrustState.ps1`](Detect-DeviceTrustState.ps1) | Detects a Windows device's trust / join state (workplace-joined, Azure AD-joined, domain-joined, hybrid-joined) |
 | [`Detect-AdobeUpdatesViaRUM.ps1`](Detect-AdobeUpdatesViaRUM.ps1) | Detects installed Adobe software and whether Adobe Remote Update Manager (RUM) should be triggered to update it |
+| [`Collect-PnPAndWindowsUpdateLogs.ps1`](Collect-PnPAndWindowsUpdateLogs.ps1) | Collects PnP device state and Windows Update logs from a managed Windows device |
 
 ### Detect-7ZipInstalled.ps1
 
@@ -112,3 +113,20 @@ InDesign, Acrobat / After Effects, and others).
 
 No Graph permissions are needed for the detection script itself — it runs
 locally on the device.
+
+### Collect-PnPAndWindowsUpdateLogs.ps1
+
+Collects PnP device state and Windows Update logs from a managed Windows
+device, for troubleshooting from Intune.
+
+How it works: it exports the PnP state with `pnputil.exe` to
+`C:\Windows\CCM\Logs\PNP_<computername>.log`, then downloads the Windows
+Update log collector (`logcollector.exe`, via the public
+`aka.ms/wucopylogsexternal` link), runs it, waits for it to collect the
+logs, and moves the resulting `WindowsUpdateLogs` archive into
+`C:\Windows\CCM\Logs\` as `Wu_logs.log`. A run log is written to
+`C:\Windows\Temp\<computername>_CollectWULogs_<timestamp>.log`.
+
+Notes: the log collector runs for up to 5 minutes while the script waits,
+and the script cleans up the downloaded collector afterwards. It runs
+locally on the device — no Graph permissions are needed.
