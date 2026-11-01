@@ -14,6 +14,7 @@ sibling folders (for example, `Compliance/macOS/`), not here.
 | [`Collect-PnPAndWindowsUpdateLogs.ps1`](Collect-PnPAndWindowsUpdateLogs.ps1) | Collects PnP device state and Windows Update logs from a managed Windows device |
 | [`Detect-StaleLocalAccountPasswords.ps1`](Detect-StaleLocalAccountPasswords.ps1) | Detects local administrator accounts whose password is older than 50 days, so rotation can be triggered |
 | [`Detect-WindowsActivation.ps1`](Detect-WindowsActivation.ps1) | Detects whether a Windows Enterprise device is activated (skips VMs and non-Enterprise editions) |
+| [`Detect-OfficeVersionCompliance.ps1`](Detect-OfficeVersionCompliance.ps1) | Detects whether Microsoft 365 Apps (Office) meets the required minimum version and the ClickToRun service is running |
 
 ### Detect-7ZipInstalled.ps1
 
@@ -173,3 +174,27 @@ Enterprise, it reads the license status via
 It runs locally on the device — no Graph permissions are needed. All
 comments were removed from the published script at the user's request;
 the logic is otherwise unchanged.
+
+### Detect-OfficeVersionCompliance.ps1
+
+Detects whether Microsoft 365 Apps (Office, Click-to-Run) is compliant,
+for use as an Intune Proactive Remediation detection script.
+
+How it works: it reads the installed Office version from the Click-to-Run
+configuration registry key (`VersionToReport`, 64-bit and 32-bit paths)
+and checks the `ClickToRunSvc` service status. It is compliant only when
+both are true: the installed version meets or exceeds the required minimum
+version, and the ClickToRun service is `Running`.
+
+- Exit `0` — compliant.
+- Exit `1` — not compliant, or an error (for example, Office not installed,
+  or the version cannot be parsed).
+
+The required minimum version is set in the script's configuration section
+— currently `16.0.19127.20154` (a Current Channel example). Update
+`$RequiredVersion` in the script when the required version changes. The
+script outputs a plain-text summary line plus a JSON summary (required and
+installed versions, version state, service status, overall compliance,
+check time) via `Write-Output` only, with no file logging, so Intune can
+capture it. It runs locally on the device — no Graph permissions are
+needed.

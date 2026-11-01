@@ -41,5 +41,7 @@ Scripts are kept separate by operating system — do not mix them in one folder.
 | [`Windows/Detect-DeviceTrustState.ps1`](Windows/Detect-DeviceTrustState.ps1) | Detects a Windows device's trust / join state (workplace-joined, Azure AD-joined, domain-joined, hybrid-joined) | On the device, as an Intune custom compliance detection script |
 | [`Windows/Detect-AdobeUpdatesViaRUM.ps1`](Windows/Detect-AdobeUpdatesViaRUM.ps1) | Detects installed Adobe software and whether Adobe Remote Update Manager (RUM) should be triggered to update it | On the device, as an Intune detection script (for example, in Proactive Remediation) |
 | [`Windows/Collect-PnPAndWindowsUpdateLogs.ps1`](Windows/Collect-PnPAndWindowsUpdateLogs.ps1) | Collects PnP device state and Windows Update logs from a managed Windows device | On the device, for troubleshooting from Intune |
+| [`Windows/Detect-StaleLocalAccountPasswords.ps1`](Windows/Detect-StaleLocalAccountPasswords.ps1) | Detects local administrator accounts whose password is older than 50 days, so rotation can be triggered | On the device, as an Intune detection script (for example, in Proactive Remediation) |
+| [`Windows/Detect-WindowsActivation.ps1`](Windows/Detect-WindowsActivation.ps1) | Detects whether a Windows Enterprise device is activated (skips VMs and non-Enterprise editions) | On the device, as an Intune detection script (for example, in Proactive Remediation) |
 
 See [`Windows/README.md`](Windows/README.md) for details on these scripts.
