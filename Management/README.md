@@ -29,6 +29,7 @@ Scripts are kept separate by operating system — do not mix them in one folder.
 | Script | What it does | Runs where |
 | --- | --- | --- |
 | [`macOS/Patch-VLCMediaPlayer.zsh`](macOS/Patch-VLCMediaPlayer.zsh) | Patches VLC Media Player on a macOS device to the latest release (or the admin-designated version) | On the device, pushed by the MDM server |
+| [`macOS/Check-WindowsAppVersion.sh`](macOS/Check-WindowsAppVersion.sh) | Checks the installed version of the Windows App on a macOS device | On the device, pushed by the MDM server |
 
 See [`Windows/README.md`](Windows/README.md) and
 [`macOS/README.md`](macOS/README.md) for details on these scripts.

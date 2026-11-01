@@ -8,6 +8,7 @@ sibling folders (for example, `Management/Windows/`), not here.
 | Script | What it does |
 | --- | --- |
 | [`Patch-VLCMediaPlayer.zsh`](Patch-VLCMediaPlayer.zsh) | Patches VLC Media Player on a macOS device to the latest release (or the admin-designated version) |
+| [`Check-WindowsAppVersion.sh`](Check-WindowsAppVersion.sh) | Checks the installed version of the Windows App on a macOS device |
 
 ### Patch-VLCMediaPlayer.zsh
 
@@ -44,3 +45,17 @@ It runs locally on the device — no Graph permissions are needed. All
 comments were removed from the published script at the user's request;
 the logic is otherwise unchanged. The `#!/bin/zsh` first line was kept,
 as it is the interpreter directive, not a comment.
+
+### Check-WindowsAppVersion.sh
+
+Checks the installed version of the Windows App on a macOS device.
+
+How it works: it looks for `/Applications/Windows App.app` and, if
+present, reads its `CFBundleShortVersionString` from `Info.plist` with
+`/usr/libexec/PlistBuddy`, and prints `Windows App version: <version>`.
+If the app is not installed, it prints `Windows App is not installed.`
+
+The app name is set in the script (`app_name="Windows App"`) — change
+that line to check a different app, for example
+`app_name="Microsoft Edge"`. It runs locally on the device — no Graph
+permissions are needed.
